@@ -1,10 +1,12 @@
+import os
+
 import numpy as np
 from PyQt6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QPushButton, QFrame, QHBoxLayout, QLineEdit, QSpacerItem,
                              QSizePolicy, QStackedWidget, QListWidget, QMainWindow, QComboBox, QDialog, QFileDialog,
                              QMessageBox, QInputDialog, QTableWidget, QTableWidgetItem, QGraphicsView, QGraphicsScene,
                              QGraphicsRectItem)
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QColor
+from PyQt6.QtCore import Qt, QSize, QUrl
+from PyQt6.QtGui import QIcon, QColor, QDesktopServices
 import sys
 from PyQt6.QtWidgets import QApplication
 from PyQt6.uic.Compiler.qtproxies import QtWidgets
@@ -364,21 +366,35 @@ class MainPage(QWidget):
 
     def create_documents_widget(self):
         widget = QWidget()
+        self.table_widget.cellDoubleClicked.connect(self.open_document_by_click)
         main_layout = QHBoxLayout()  # Головний лейаут для віджета
 
         # Створення вертикального лейаута для таблиці та її напису
         table_layout = QVBoxLayout()
 
+        label_layout = QHBoxLayout()
+
+        # Додавання іконки над написом "Документи"
+        info_button = QPushButton()
+        info_button.setIcon(QIcon("images/i.png"))  # Замініть на шлях до вашої іконки
+        info_button.setIconSize(QSize(20, 20))
+        info_button.setStyleSheet("border: none;")  # Забираємо рамку у кнопки
+        info_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        info_button.clicked.connect(self.show_documents_info)
+
         # Лейбл для таблиці
         self.label2 = QLabel("Документи:", self)
         self.label2.setStyleSheet("font-size: 26px; color: #000000; margin-bottom: 1px;")  # Додано верхній відступ
-        table_layout.addWidget(self.label2, alignment=Qt.AlignmentFlag.AlignCenter)  # Центрування напису
+        label_layout.addWidget(self.label2, alignment=Qt.AlignmentFlag.AlignCenter)
+        label_layout.addWidget(info_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Створення таблиці
-        self.table_widget = QTableWidget(20, 8, self)
+
+        # Додаємо горизонтальний лейаут з іконкою та написом до вертикального
+        table_layout.addLayout(label_layout)
+
+        self.table_widget = QTableWidget(20, 6, self)
         self.table_widget.setHorizontalHeaderLabels([
-            "Назва", "Кредит", "Дебит",
-            "Ціна", "Сума", "Дата",
+            "Номер","Назва", "Дата", "Сума",
             "Статус", "Коментар"
         ])
 
@@ -426,9 +442,9 @@ class MainPage(QWidget):
             self.table_widget.setItem(row, 0, QTableWidgetItem(f"Документ {row + 1}"))
             self.table_widget.setItem(row, 5, QTableWidgetItem("2024-11-25"))
 
-            # Додаємо комбобокси в стовпці "Кредит" та "Дебіт"
-            self.table_widget.setCellWidget(row, 1, self.create_combo_box())
-            self.table_widget.setCellWidget(row, 2, self.create_combo_box())
+            # # Додаємо комбобокси в стовпці "Кредит" та "Дебіт"
+            # self.table_widget.setCellWidget(row, 1, self.create_combo_box())
+            # self.table_widget.setCellWidget(row, 2, self.create_combo_box())
 
         table_layout.addWidget(self.table_widget)  # Додаємо таблицю під напис
 
@@ -459,6 +475,19 @@ class MainPage(QWidget):
 
         widget.setLayout(main_layout)
         return widget
+
+    def open_document_by_click(self, row, column):
+        """Обробка кліку по комірці таблиці."""
+        # Перевіряємо, чи клікнули на колонку з назвами (колонка 0)
+        if column == 0:  # Індекс колонки з назвами документів
+            document_name = self.table_widget.item(row, column).text()  # Отримуємо назву документа
+            document_path = f"documents/{document_name}.pdf"  # Формуємо шлях до документа
+
+            # Відкриваємо документ, якщо файл існує
+            if os.path.exists(document_path):
+                QDesktopServices.openUrl(QUrl.fromLocalFile(document_path))
+            else:
+                QMessageBox.warning(self, "Помилка", f"Документ '{document_name}' не знайдено.")
 
     def create_combo_box(self):
         combo_box = QComboBox(self)
@@ -828,6 +857,40 @@ class MainPage(QWidget):
                 }
             """)
             msg_box.exec()  # Запускаємо виконання модального вікна
+
+    def show_documents_info(self):
+        msg_box = QMessageBox(self)
+        msg_box.setWindowTitle("Інформація про документи")
+        msg_box.setText(
+            "<span style='color: black;'>"
+            "Документи – це файли, що містять важливі дані, такі як назва, сума, статус тощо."
+            "</span>"
+        )
+
+        # Додаємо стиль для кнопок
+        msg_box.setStyleSheet("""
+            QMessageBox {
+                font-size: 14px;
+                color: black;
+            }
+            QPushButton {
+                background-color: #E8F0FF;
+                font-size: 14px;
+                font-weight: bold;
+                color: #000000;
+                padding: 4px;
+                border-radius: 10px;
+                border: 2px solid #000000;
+            }
+            QPushButton:hover {
+                background-color: #D0E0FF;
+            }
+            QPushButton:pressed {
+                background-color: #B0C8FF;
+            }
+        """)
+
+        msg_box.exec()
 
     def rename_document(self):
         """Перейменувати вибраний документ."""

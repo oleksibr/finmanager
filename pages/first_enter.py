@@ -1,8 +1,8 @@
 import sys
+
 from PyQt6.QtGui import QPixmap, QTransform
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QApplication, QFrame, QHBoxLayout, QPushButton, QMainWindow
-from PyQt6.QtCore import Qt
-
+from PyQt6.QtCore import Qt, QPropertyAnimation, QPoint, QEasingCurve
 
 class FirstEnter(QWidget):
     def __init__(self):
@@ -32,31 +32,22 @@ class FirstEnter(QWidget):
         header.setFixedHeight(110)
         header_layout = QHBoxLayout(header)
 
-
         # Іконка
-        # Контейнер для зображення та тексту
-        header_container = QWidget()
-        header_container_layout = QHBoxLayout(header_container)
-        header_container_layout.setContentsMargins(0, 0, 0, 0)  # Відсутність зайвих відступів
-        header_container_layout.setSpacing(10)  # Відстань між зображенням і текстом
-
-        # Зображення
-        hand_icon = QLabel()
+        self.hand_icon = QLabel()
         pixmap = QPixmap("images/financial.png").scaled(
             55, 55,
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation
         )
-        hand_icon.setPixmap(pixmap)
-        header_container_layout.addWidget(hand_icon)
+        self.hand_icon.setPixmap(pixmap)
+        self.hand_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Текст у заголовку
-        header_label = QLabel("Financial cost\nmanagement system")
-        header_label.setStyleSheet("font-size: 26px; color: #000000; font-weight: bold;")
-        header_container_layout.addWidget(header_label)
+        self.header_label = QLabel("Financial cost\nmanagement system")
+        self.header_label.setStyleSheet("font-size: 26px; color: #000000; font-weight: bold;")
 
-        # Додавання контейнера до основного макета з вирівнюванням по центру
-        header_layout.addWidget(header_container, alignment=Qt.AlignmentFlag.AlignCenter)
+        header_layout.addWidget(self.hand_icon, alignment=Qt.AlignmentFlag.AlignLeft)
+        header_layout.addWidget(self.header_label, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Додати заголовок у центральний лейаут
         central_layout.addWidget(header)
@@ -84,38 +75,60 @@ class FirstEnter(QWidget):
         # Застосування основного лейауту
         self.setLayout(main_layout)
 
+        # Додати текст і кнопку реєстрації
         label = QLabel("Для початку \nнеобхідно зареєструватися:", self)
         central_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignHCenter)
         label.setStyleSheet("""
-                    QLabel {
-                        font-size: 30px; 
-                        font-weight: bold; 
-                        color: #000000;
-                        padding: 5px;
-                        margin-top: 50px;
-                    }
-                """)
-
+            QLabel {
+                font-size: 30px; 
+                font-weight: bold; 
+                color: #000000;
+                padding: 5px;
+                margin-top: 80px;
+            }
+        """)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         registr_button = QPushButton("Зареєструватися", self)
         registr_button.setStyleSheet(""" 
-                    QPushButton {
-                        background-color: #487EF1;
-                        color: #000000;
-                        font-size: 24px;
-                        border-radius: 20px;
-                        padding: 10px 20px;
-                        border: 3px solid #000000; 
-                    }
-                    QPushButton:hover {
-                        background-color: #0059b3;
-                        border: 3px solid #000000;
-                    }
-                """)
+            QPushButton {
+                background-color: #487EF1;
+                color: #000000;
+                font-size: 24px;
+                border-radius: 20px;
+                padding: 10px 20px;
+                border: 3px solid #000000; 
+            }
+            QPushButton:hover {
+                background-color: #0059b3;
+                border: 3px solid #000000;
+            }
+        """)
         registr_button.setFixedSize(240, 55)
         central_layout.addWidget(registr_button, alignment=Qt.AlignmentFlag.AlignCenter)
         registr_button.clicked.connect(self.handle_registr)
+
+        # Зберегти анімації як атрибути
+        self.icon_animation = QPropertyAnimation(self.hand_icon, b"pos")
+        self.text_animation = QPropertyAnimation(self.header_label, b"pos")
+        self.start_animation()
+
+    def start_animation(self):
+        # Анімація для іконки
+        self.hand_icon.move(310, 0)
+        self.icon_animation.setDuration(2000)
+        self.icon_animation.setStartValue(QPoint(310, 0))
+        self.icon_animation.setEndValue(QPoint(310, 30))
+        self.icon_animation.setEasingCurve(QEasingCurve.Type.OutBounce)
+        self.icon_animation.start()
+
+        # Анімація для тексту
+        self.header_label.move(380, 0)
+        self.text_animation.setDuration(2000)
+        self.text_animation.setStartValue(QPoint(380, 0))
+        self.text_animation.setEndValue(QPoint(380, 35))
+        self.text_animation.setEasingCurve(QEasingCurve.Type.OutBounce)
+        self.text_animation.start()
 
     def add_images_to_layout(self, layout, mirrored):
         layout.setSpacing(0)
@@ -165,6 +178,7 @@ class FirstEnter(QWidget):
             main_page = Registration()  # Ініціалізуємо сторінку реєстрації
             main_window.setCentralWidget(main_page)  # Замінюємо центральний віджет
             self.deleteLater()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

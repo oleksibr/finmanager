@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QLabel, QPushButton, QLineEdit, QHBoxLayout
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QPropertyAnimation, QRect
 from PyQt6.QtGui import QPixmap, QTransform
 
 
@@ -27,6 +27,7 @@ class Registration(QWidget):
         central_layout = QVBoxLayout()
         central_layout.setSpacing(15)  # Скоротити відстань між елементами
         central_layout.setContentsMargins(20, 20, 20, 20)  # Зменшити відступи з боків
+
 
         # Заголовок
         title = QLabel("РЕЄСТРАЦІЯ", self)
@@ -91,8 +92,9 @@ class Registration(QWidget):
             self.login_input = input_field
         elif placeholder_text == "Пароль" and not hasattr(self, "password_input"):
             self.password_input = input_field
-        elif placeholder_text == "Пароль":
+        elif placeholder_text == "Повторення паролю":
             self.password_confirm_input = input_field
+
 
     def add_images_to_layout(self, layout, mirrored):
         layout.setSpacing(0)

@@ -34,14 +34,14 @@ class SelectUser(QWidget):
 
         # Поле для введення логіну
         login_label = QLabel("Введіть логін:", self)
-        login_label.setStyleSheet("font-size: 18px; color: #000000; margin-top: 10px;")
+        login_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px;")
         central_layout.addWidget(login_label)
 
         login_input = QLineEdit(self)
         login_input.setPlaceholderText("Логін")
         login_input.setFixedSize(500, 40)
         login_input.setStyleSheet("""
-            font-size: 18px;
+            font-size: 20px;
             padding: 5px;
             background-color: #FFFFFF;
             border: 2px solid #d3d3d3;
@@ -52,7 +52,7 @@ class SelectUser(QWidget):
 
         # Поле для введення паролю
         password_label = QLabel("Введіть пароль:", self)
-        password_label.setStyleSheet("font-size: 18px; color: #000000; margin-top: 10px;")
+        password_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px;")
         central_layout.addWidget(password_label)
 
         password_input = QLineEdit(self)
@@ -60,7 +60,7 @@ class SelectUser(QWidget):
         password_input.setEchoMode(QLineEdit.EchoMode.Password)
         password_input.setFixedSize(500, 40)
         password_input.setStyleSheet("""
-            font-size: 18px;
+            font-size: 20px;
             padding: 5px;
             background-color: #FFFFFF;
             border: 2px solid #d3d3d3;
