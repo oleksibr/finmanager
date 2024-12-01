@@ -1,0 +1,3 @@
+﻿id;name;password;level_id;status
+1;system;;1;enable
+2;admin;;2;enable
