@@ -86,6 +86,7 @@ class DatabasesConfig:
             config = json.load(file)
             if "current_db" not in config:
                 config["current_db"] = idx
+            config["current_db"] = idx
         with open(self.config_file, "w", encoding="utf-8") as file:
             json.dump(config, file, ensure_ascii=False, indent=4)
 

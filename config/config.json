@@ -1,11 +1,27 @@
 {
-    "current_db": 20,
+    "current_db": 5,
     "dir_db": "..\\\\DB",
     "default_csv_dir": "default_csv",
     "list_db": [
         {
-            "db_name": "..\\\\default_db.db",
-            "db_dir": "DB"
+            "db_name": "default_db.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db2.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "test.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db3.db",
+            "db_dir": "..\\\\DB"
         }
     ],
     "default_csv": [

@@ -347,7 +347,7 @@ class Unit(Base):
     name = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     point_type = Column(Integer, default=None)
-    parent_unit_id = Column(Integer, ForeignKey('units.id'), nullable=True)
+    parent_id = Column(Integer, ForeignKey('units.id'), nullable=True)
     status_id = Column(Integer, ForeignKey('statuses.id'))
 
     # def __init__(self, session=None, **kwargs):
@@ -476,7 +476,7 @@ class Subcounto(Base):
     __tablename__ = 'subcountos'
 
     id = Column(Integer, primary_key=True)
-    parent_subcounto_id = Column(Integer, ForeignKey('subcountos.id'), nullable=True)
+    parent_id = Column(Integer, ForeignKey('subcountos.id'), nullable=True)
 
     number = Column(Integer, autoincrement=True, nullable=False)
     name = Column(String, nullable=False)

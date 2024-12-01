@@ -14,6 +14,7 @@ import finmanager.models.models as model
 # root_dt_values = model.AssociatedAccount.find_all_record_kt(session, 30)
 # root_kt_values = model.AssociatedAccount.find_all_record_dt(session, 30)
 #UI
+
 def list_parent(in_model, id):
     """
     list_parent(model.Account, 10)
@@ -26,14 +27,14 @@ def list_parent(in_model, id):
     descendants = session.query(
             in_model
         ).filter(
-            in_model.parent_id == 1
+            in_model.parent_id == id
         ).all()
     session.close()
     list = [name.name for name in descendants]
     print(list)
     return list
 
-
+# list_parent(model.Subcounto, 1)
 def get_id_by_name(session, model, name):
     """id запису по збігу поля name."""
     record = session.query(model.id).filter(model.name == name).first()
@@ -92,8 +93,14 @@ def get_list_db():
     {..., ...}]
     """
     config = conf_db.DatabasesConfig()
-    return config.get_list_db()
+    nn = config.get_list_db()
+    return [val["db_name"] for val in config.get_list_db()]
 
+ddd = conf_db.DatabasesConfig()
+ddd.set_current_db_idx(5)
+
+# print(get_list_db())
+# print(len(get_list_db()))
 
 def check_file_name_match(file_name, folder_path):
 
@@ -368,8 +375,8 @@ def edite_access_level(new_name=None, new_level=None, id = None, user = None):
     #         raise ValueError(f"Error deleting AccessLevel: {e}")
 
 
-# create_default_db("ddd11_test")
-create_default_db()
+# create_default_db("test")
+# create_default_db()
 
 # delete_all_row_reset_id("AssociatedAccount")
 # add_data_from_single_csv("..\default_csv\AssociatedAccount.csv")
