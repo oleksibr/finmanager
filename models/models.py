@@ -6,7 +6,7 @@ from datetime import datetime
 from functools import wraps
 from sqlalchemy.exc import IntegrityError
 import finmanager.config.config_db as conf_db
-from finmanager.models.decorators import unique_name, add_version_record
+# from models.decorators import unique_name, add_version_record
 # from sqlalchemy.orm import declarative_base
 # engine = create_engine('sqlite:///example.db')
 

@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 # from models.models import Level, Account, AccountType, AssociatedAccount, Base
 from sqlalchemy.orm import declarative_base
 import finmanager.config.config_db as conf_db
-import finmanager.models.models as model
+import models as model
 
 
 # root_dt_values = model.AssociatedAccount.find_all_record_kt(session, 30)
@@ -26,14 +26,14 @@ def list_parent(in_model, id):
     descendants = session.query(
             in_model
         ).filter(
-            in_model.parent_id == 1
+            in_model.parent_id == id
         ).all()
     session.close()
     list = [name.name for name in descendants]
     print(list)
     return list
 
-
+print(list_parent(model.Account, 2))
 def get_id_by_name(session, model, name):
     """id запису по збігу поля name."""
     record = session.query(model.id).filter(model.name == name).first()
@@ -369,7 +369,7 @@ def edite_access_level(new_name=None, new_level=None, id = None, user = None):
 
 
 # create_default_db("ddd11_test")
-create_default_db()
+#create_default_db()
 
 # delete_all_row_reset_id("AssociatedAccount")
 # add_data_from_single_csv("..\default_csv\AssociatedAccount.csv")

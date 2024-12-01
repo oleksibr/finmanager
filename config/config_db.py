@@ -165,6 +165,8 @@ class DatabasesConfig:
         Session = sessionmaker(bind=self.get_db_engine())
         return Session()
 
+
+#ddd=DatabasesConfig()
 def delete_db_engine(db_name):
     db_file = f'{db_name}.db'
 
