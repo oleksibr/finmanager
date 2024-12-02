@@ -14,9 +14,12 @@ from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.backends.backend_template import FigureCanvas
 
-from pages.change_existing_db import load_csv
+from finmanager.pages.change_existing_db import load_csv
 from user_window import UserWindow
 from PyQt6 import QtCore
+import finmanager.models.utils_db as util
+import finmanager.models.models as model
+import finmanager.config.config_db as conf
 
 
 
@@ -39,6 +42,37 @@ class CustomButton(QPushButton):
         """)
         self.setFixedSize(200, 50)
 
+class CustomComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet(""" 
+                                QComboBox {
+                                    background-color: #E8F0FF;
+                                    font-size: 16px;
+                                    padding: 5px 15px 5px 10px;
+                                    color: #000000;
+                                    border-radius: 5px;
+                                }
+                                QComboBox QAbstractItemView {
+                                    background-color: #D8EAFC;
+                                    color: #000;
+                                    selection-background-color: #88B9EB;
+                                    selection-color: #D2DDFE;
+                                }
+                                QComboBox::drop-down {
+                                    background-color: #B1C3FC;
+                                    border-radius: 5px;
+                                    width: 20px; 
+                                }
+                                QComboBox::down-arrow {
+                                    image: url(images/down_arrow.png);
+                                    width: 14px; 
+                                    height: 14px; 
+                                }
+                            """)
+        self.setFixedSize(110, 30)
+
+
 
 class DocumentViewWindow(QDialog):
     def __init__(self, document_name, parent=None):
@@ -53,7 +87,7 @@ class DocumentViewWindow(QDialog):
         layout.addWidget(label)
 
         # Dropdown (ComboBox) inside the document view window
-        dropdown = QComboBox()
+        dropdown = CustomComboBox()
         dropdown.addItems(["Option 1", "Option 2", "Option 3"])  # Example items
         layout.addWidget(dropdown)
 
@@ -337,8 +371,10 @@ class MainPage(QWidget):
         self.select_button(self.operations_button)
 
     def show_reports_widget(self):
-        self.stacked_widget.setCurrentWidget(self.reports_widget)
-        self.select_button(self.reports_button)
+        pass
+
+        #ddd = util.list_parent(model.Account, 2)
+        #print(ddd)
 
     def show_monthly_expenses_widget(self):
         self.stacked_widget.setCurrentWidget(self.monthly_expenses_widget)
@@ -364,9 +400,12 @@ class MainPage(QWidget):
     def add_document_to_list(self, document_name):
         self.document_list.addItem(document_name)
 
+    def ddd(self):
+        pass
+
     def create_documents_widget(self):
         widget = QWidget()
-        self.table_widget.cellDoubleClicked.connect(self.open_document_by_click)
+
         main_layout = QHBoxLayout()  # Головний лейаут для віджета
 
         # Створення вертикального лейаута для таблиці та її напису
@@ -385,16 +424,16 @@ class MainPage(QWidget):
         # Лейбл для таблиці
         self.label2 = QLabel("Документи:", self)
         self.label2.setStyleSheet("font-size: 26px; color: #000000; margin-bottom: 1px;")  # Додано верхній відступ
-        label_layout.addWidget(self.label2, alignment=Qt.AlignmentFlag.AlignCenter)
-        label_layout.addWidget(info_button, alignment=Qt.AlignmentFlag.AlignCenter)
-
+        label_layout.addWidget(self.label2, alignment=Qt.AlignmentFlag.AlignRight)
+        label_layout.addWidget(info_button, alignment=Qt.AlignmentFlag.AlignLeft)
 
         # Додаємо горизонтальний лейаут з іконкою та написом до вертикального
         table_layout.addLayout(label_layout)
 
-        self.table_widget = QTableWidget(20, 6, self)
+        self.table_widget = QTableWidget(160, 8, self)
+        self.table_widget.cellDoubleClicked.connect(self.open_document_by_click)
         self.table_widget.setHorizontalHeaderLabels([
-            "Номер","Назва", "Дата", "Сума",
+            "Номер", "Назва", "Дебіт", "Кредит", "Дата", "Сума",
             "Статус", "Коментар"
         ])
 
@@ -437,16 +476,35 @@ class MainPage(QWidget):
         for column in range(self.table_widget.columnCount()):
             self.table_widget.setColumnWidth(column, column_width)  # Встановлюємо ширину кожної колонки
 
+
         # Додавання прикладових даних та комбобоксів
         for row in range(self.table_widget.rowCount()):
             self.table_widget.setItem(row, 0, QTableWidgetItem(f"Документ {row + 1}"))
             self.table_widget.setItem(row, 5, QTableWidgetItem("2024-11-25"))
 
-            # # Додаємо комбобокси в стовпці "Кредит" та "Дебіт"
-            # self.table_widget.setCellWidget(row, 1, self.create_combo_box())
-            # self.table_widget.setCellWidget(row, 2, self.create_combo_box())
+            self.db_combo = CustomComboBox()
+            self.db_combo.addItems(util.list_parent(model.Account, 2))
+            conf1 = conf.DatabasesConfig()
+            self.db_combo.setCurrentIndex(conf1.get_idx_db_0())
 
+            # Підключаємо сигнал зміни вибору
+            self.db_combo.currentIndexChanged.connect(lambda index, r=row: self.ddd(r, index))
+
+            # Додаємо QComboBox у таблицю
+            self.table_widget.setCellWidget(row, 2, self.db_combo)
+
+            self.db_combo1 = CustomComboBox()
+            self.db_combo1.addItems(util.list_parent(model.Account, 2))
+            conf1 = conf.DatabasesConfig()
+            self.db_combo1.setCurrentIndex(conf1.get_idx_db_0())
+
+            # Підключаємо сигнал зміни вибору
+            self.db_combo1.currentIndexChanged.connect(lambda index, r=row: self.ddd(r, index))
+
+            # Додаємо QComboBox у таблицю
+            self.table_widget.setCellWidget(row, 3, self.db_combo1)
         table_layout.addWidget(self.table_widget)  # Додаємо таблицю під напис
+
 
         # Лейаут для кнопок
         button_layout = QVBoxLayout()
@@ -512,30 +570,32 @@ class MainPage(QWidget):
 
     def create_operations_widget(self):
         widget = QWidget()
-        # layout = QVBoxLayout()
-        #
-        # # Лейбл для розділу
-        # label = QLabel("Операції", self)
-        # label.setStyleSheet("color: #000000; font-size: 26px; margin-bottom: 20px;")  # Додано нижній відступ
-        # layout.addWidget(label)
-        #
-        # # Створення кнопок
-        # button_width = 200
-        # create_button = self.create_custom_button("Створитиваи п", button_width)
-        # add_button = self.create_custom_button("Додатипв", button_width)
-        # delete_button = self.create_custom_button("Видалитиви", button_width)
-        # rename_button = self.create_custom_button("Перейменувативр", button_width)
-        #
-        # # Підключення кнопок до функцій
-        #
-        # # Додавання кнопок до лейауту
-        # layout.addWidget(create_button)
-        # layout.addWidget(add_button)
-        # layout.addWidget(delete_button)
-        # layout.addWidget(rename_button)
-        #
-        # # Налаштовуємо віджет
-        # widget.setLayout(layout)
+        layout = QHBoxLayout()
+
+        # Лейбл для розділу
+        label = QLabel("Операції", self)
+        label_layout = QHBoxLayout()
+        label_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)
+        label.setStyleSheet("color: #000000; font-size: 26px; margin-bottom: 20px;")  # Додано нижній відступ
+        layout.addWidget(label)
+
+        # Створення кнопок
+        button_width = 180
+        create_button = self.create_custom_button("Створити", button_width)
+        add_button = self.create_custom_button("Додати", button_width)
+        delete_button = self.create_custom_button("Видалити", button_width)
+        rename_button = self.create_custom_button("Перейменувати", button_width)
+
+        # Підключення кнопок до функцій
+
+        # Додавання кнопок до лейауту
+        layout.addWidget(create_button)
+        layout.addWidget(add_button)
+        layout.addWidget(delete_button)
+        layout.addWidget(rename_button)
+
+        # Налаштовуємо віджет
+        widget.setLayout(layout)
         return widget
 
     def create_reports_widget(self):

@@ -4,6 +4,7 @@ from PyQt6.QtGui import QPixmap, QTransform
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QApplication, QFrame, QHBoxLayout, QPushButton, QMainWindow
 from PyQt6.QtCore import Qt, QPropertyAnimation, QPoint, QEasingCurve
 
+
 class FirstEnter(QWidget):
     def __init__(self):
         super().__init__()
@@ -16,11 +17,11 @@ class FirstEnter(QWidget):
 
         # Ліва колонка із зображеннями
         left_column = QVBoxLayout()
-        self.add_images_to_layout(left_column, mirrored=False)
+        add_images_to_layout(left_column, mirrored=False)
 
         # Права колонка із зображеннями
         right_column = QVBoxLayout()
-        self.add_images_to_layout(right_column, mirrored=True)
+        add_images_to_layout(right_column, mirrored=True)
 
         # Центральна частина
         central_layout = QVBoxLayout()
@@ -54,7 +55,7 @@ class FirstEnter(QWidget):
 
         # Титульний текст
         title = QLabel("ЛАСКАВО ПРОСИМО ДО \nЗАСТОСУНКУ ДЛЯ УПРАВЛІННЯ \nФІНАНСОВИМИ ВИТРАТАМИ", self)
-        central_layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        central_layout.addWidget(title, alignment= Qt.AlignmentFlag.AlignHCenter)
         title.setStyleSheet("""
             QLabel {
                 font-size: 32px; 
@@ -75,101 +76,43 @@ class FirstEnter(QWidget):
         # Застосування основного лейауту
         self.setLayout(main_layout)
 
-        # Додати текст і кнопку реєстрації
-        label = QLabel("Для початку \nнеобхідно зареєструватися:", self)
-        central_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignHCenter)
-        label.setStyleSheet("""
-            QLabel {
-                font-size: 30px; 
-                font-weight: bold; 
-                color: #000000;
-                padding: 5px;
-                margin-top: 80px;
-            }
-        """)
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # Додати кнопку реєстрації
 
-        registr_button = QPushButton("Зареєструватися", self)
-        registr_button.setStyleSheet(""" 
-            QPushButton {
-                background-color: #487EF1;
-                color: #000000;
-                font-size: 24px;
-                border-radius: 20px;
-                padding: 10px 20px;
-                border: 3px solid #000000; 
-            }
-            QPushButton:hover {
-                background-color: #0059b3;
-                border: 3px solid #000000;
-            }
-        """)
-        registr_button.setFixedSize(240, 55)
-        central_layout.addWidget(registr_button, alignment=Qt.AlignmentFlag.AlignCenter)
-        registr_button.clicked.connect(self.handle_registr)
+        # Create a horizontal layout for the buttons
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(20)  # Space between buttons
+        button_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Align the buttons layout to the center
+
+        # Add buttons to the horizontal layout
+        button1 = create_custom_button("Зареєструватися", self, self.handle_registr)
+        button2 = create_custom_button("Увійти", self, self.go_to_login_page)
+
+        button_layout.addWidget(button1, alignment=Qt.AlignmentFlag.AlignLeft)
+        button_layout.addWidget(button2, alignment=Qt.AlignmentFlag.AlignRight)
+
+        # Add the horizontal layout to the central layout
+        central_layout.addLayout(button_layout)
+
 
         # Зберегти анімації як атрибути
         self.icon_animation = QPropertyAnimation(self.hand_icon, b"pos")
         self.text_animation = QPropertyAnimation(self.header_label, b"pos")
         self.start_animation()
 
+    def anim(self, some, animation, w, h):
+        some.move(w, 0)
+        animation.setDuration(2000)
+        animation.setStartValue(QPoint(w, 0))
+        animation.setEndValue(QPoint(w, h))
+        animation.setEasingCurve(QEasingCurve.Type.OutBounce)
+        animation.start()
+
     def start_animation(self):
         # Анімація для іконки
-        self.hand_icon.move(310, 0)
-        self.icon_animation.setDuration(2000)
-        self.icon_animation.setStartValue(QPoint(310, 0))
-        self.icon_animation.setEndValue(QPoint(310, 30))
-        self.icon_animation.setEasingCurve(QEasingCurve.Type.OutBounce)
-        self.icon_animation.start()
+        self.anim(self.hand_icon, self.icon_animation, 310, 30)
 
         # Анімація для тексту
-        self.header_label.move(380, 0)
-        self.text_animation.setDuration(2000)
-        self.text_animation.setStartValue(QPoint(380, 0))
-        self.text_animation.setEndValue(QPoint(380, 35))
-        self.text_animation.setEasingCurve(QEasingCurve.Type.OutBounce)
-        self.text_animation.start()
-
-    def add_images_to_layout(self, layout, mirrored):
-        layout.setSpacing(0)
-
-        images = [
-            "images/money.png",
-            "images/bag.png",
-            "images/wallet.png",
-            "images/hand.png",
-        ]
-
-        for i in range(15):
-            image_label = QLabel()
-            pixmap = QPixmap(images[i % len(images)])
-            if mirrored:
-                transform = QTransform().scale(-1, 1)  # Дзеркалення зображення
-                pixmap = pixmap.transformed(transform)
-
-            # Налаштування розміру зображення
-            image_label.setPixmap(pixmap.scaled(
-                40, 40,
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation
-            ))
-
-            # Контейнер для вирівнювання
-            container = QWidget()
-            container.setFixedSize(300, 60)  # Фіксований розмір області з картинкою
-            container_layout = QHBoxLayout(container)
-            container_layout.setContentsMargins(0, 10, 0, 10)  # Налаштування відступів
-            container_layout.setSpacing(0)
-
-            if i % 3 == 0:  # Вирівнювання ліворуч
-                container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignLeft)
-            elif i % 3 == 1:  # Вирівнювання праворуч
-                container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignRight)
-            else:  # Вирівнювання по центру
-                container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignCenter)
-
-            # Додавання контейнера до основного лейауту
-            layout.addWidget(container)
+        self.anim(self.header_label, self.text_animation, 380, 35)
 
     def handle_registr(self):
         from registration import Registration
@@ -179,9 +122,87 @@ class FirstEnter(QWidget):
             main_window.setCentralWidget(main_page)  # Замінюємо центральний віджет
             self.deleteLater()
 
+    def go_to_login_page(self):
+        from select_user import SelectUser
+        main_window = self.window()
+
+        if isinstance(main_window, QMainWindow):
+            print("Перехід до головного вікна")
+            # select_user = SelectUser()  # Створюємо новий віджет
+            from main_page import MainPage
+            select_user = SelectUser()
+            # main_window.update_central_widget(select_user)
+            # main_window.update_central_widget(main_page)
+            main_window.setCentralWidget(select_user)
+            self.deleteLater()
+
+
+def add_images_to_layout(layout, mirrored):
+    layout.setSpacing(0)
+
+    images = [
+        "images/money.png",
+        "images/bag.png",
+        "images/wallet.png",
+        "images/hand.png",
+    ]
+
+    for i in range(15):
+        image_label = QLabel()
+        pixmap = QPixmap(images[i % len(images)])
+        if mirrored:
+            transform = QTransform().scale(-1, 1)  # Дзеркалення зображення
+            pixmap = pixmap.transformed(transform)
+
+        # Налаштування розміру зображення
+        image_label.setPixmap(pixmap.scaled(
+            40, 40,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        ))
+
+        # Контейнер для вирівнювання
+        container = QWidget()
+        container.setFixedSize(300, 60)  # Фіксований розмір області з картинкою
+        container_layout = QHBoxLayout(container)
+        container_layout.setContentsMargins(0, 10, 0, 10)  # Налаштування відступів
+        container_layout.setSpacing(0)
+
+        if i % 3 == 0:  # Вирівнювання ліворуч
+            container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignLeft)
+        elif i % 3 == 1:  # Вирівнювання праворуч
+            container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignRight)
+        else:  # Вирівнювання по центру
+            container_layout.addWidget(image_label, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Додавання контейнера до основного лейауту
+        layout.addWidget(container)
+
+
+def create_custom_button(text, parent, event):
+    button = QPushButton(text, parent)
+    button.setStyleSheet(""" 
+                QPushButton {
+                    background-color: #487EF1;
+                    color: #000000;
+                    font-size: 22px;
+                    border-radius: 20px;
+                    padding: 10px 20px;
+                    border: 3px solid #000000; 
+                }
+                QPushButton:hover {
+                    background-color: #0059b3;
+                    border: 3px solid #000000;
+                }
+            """)
+    button.setFixedSize(250, 55)
+    button.clicked.connect(event)
+    return button
+
 
 if __name__ == '__main__':
+    import main
+
     app = QApplication(sys.argv)
-    window = FirstEnter()
-    window.showMaximized()
+    window = main.MainApp()
     sys.exit(app.exec())

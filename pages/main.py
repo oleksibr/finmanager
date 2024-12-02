@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
-from select_user import SelectUser
+from first_enter import FirstEnter
 
 class MainApp(QMainWindow):
     def __init__(self):
@@ -20,8 +20,8 @@ class MainApp(QMainWindow):
         self.layout = QVBoxLayout(self.central_widget)
 
         # Створюємо SelectUser і додаємо його до компоновки
-        self.select_user = SelectUser()
-        self.layout.addWidget(self.select_user)
+        self.first_enter = FirstEnter()
+        self.layout.addWidget(self.first_enter)
 
         # Налаштування головного вікна
         self.setWindowTitle("Financial cost management system")

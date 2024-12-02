@@ -1,5 +1,5 @@
 {
-    "current_db": 1,
+    "current_db": 4,
     "dir_db": "..\\\\DB",
     "default_csv_dir": "default_csv",
     "list_db": [
@@ -9,6 +9,30 @@
         },
         {
             "db_name": "default_db2.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "db3.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "tttt.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "ddd4.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "ddd6.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "ddd7.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "wwwww.db",
             "db_dir": "..\\\\DB"
         }
     ],

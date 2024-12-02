@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 # from models.models import Level, Account, AccountType, AssociatedAccount, Base
 from sqlalchemy.orm import declarative_base
 import finmanager.config.config_db as conf_db
-import models as model
+import finmanager.models.models as model
 
 
 # root_dt_values = model.AssociatedAccount.find_all_record_kt(session, 30)
@@ -33,7 +33,6 @@ def list_parent(in_model, id):
     print(list)
     return list
 
-print(list_parent(model.Account, 2))
 def get_id_by_name(session, model, name):
     """id запису по збігу поля name."""
     record = session.query(model.id).filter(model.name == name).first()
@@ -92,7 +91,11 @@ def get_list_db():
     {..., ...}]
     """
     config = conf_db.DatabasesConfig()
-    return config.get_list_db()
+    return [val["db_name"] for val in config.get_list_db()]
+
+    print(get_list_db())
+    print(len(get_list_db()))
+
 
 
 def check_file_name_match(file_name, folder_path):

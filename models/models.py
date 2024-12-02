@@ -476,7 +476,7 @@ class Subcounto(Base):
     __tablename__ = 'subcountos'
 
     id = Column(Integer, primary_key=True)
-    parent_subcounto_id = Column(Integer, ForeignKey('subcountos.id'), nullable=True)
+    parent_id = Column(Integer, ForeignKey('subcountos.id'), nullable=True)
 
     number = Column(Integer, autoincrement=True, nullable=False)
     name = Column(String, nullable=False)
@@ -487,16 +487,16 @@ class Subcounto(Base):
 
     sc_transactions = relationship("ScTransaction", backref="subcounto", foreign_keys=[ScTransaction.subcounto_id])
 
-    # @validates('parent_subcounto_id')
-    # def validate_parent_subkonto(self, key, parent_subcounto_id):
-    #     if parent_subcounto_id == self.id:
+    # @validates('parent_id')
+    # def validate_parent_subkonto(self, key, parent_id):
+    #     if parent_id == self.id:
     #         raise ValueError("Subkonto cannot reference its own ID.")
-    #     parent = parent_subcounto_id
+    #     parent = parent_id
     #     while parent:
     #         if parent == self.id:
     #             raise ValueError("Cyclic reference detected in parent_subkonto.")
-    #         parent = session.query(Subcounto).get(parent).parent_subcounto_id
-    #     return parent_subcounto_id
+    #         parent = session.query(Subcounto).get(parent).parent_id
+    #     return parent_id
 
 
 
@@ -589,7 +589,7 @@ class Account(Base):
     #     while parent:
     #         if parent == self.id:
     #             raise ValueError("Cyclic reference detected in parent_account.")
-    #         parent = session.query(Account).get(parent).parent_subcounto_id
+    #         parent = session.query(Account).get(parent).parent_id
     #     return parent_account_id
     #
     #

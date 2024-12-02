@@ -4,11 +4,14 @@ from PyQt6.QtWidgets import (QWidget, QLabel, QVBoxLayout, QLineEdit, QPushButto
 
 import sys
 from Utils import add_images_to_layout
+from finmanager.pages.first_enter import FirstEnter
+from first_enter import add_images_to_layout, create_custom_button
+
 
 class SelectUser(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Вибір користувача")
+        self.setWindowTitle("Підтвердження користувача")
         self.setStyleSheet("background-color: #F7F2F2;")
 
         main_layout = QHBoxLayout()
@@ -28,7 +31,7 @@ class SelectUser(QWidget):
         central_layout.setSpacing(10)
 
         # Заголовок
-        title = QLabel("ОБЕРІТЬ КОРИСТУВАЧА", self)
+        title = QLabel("ПІДТВЕРДІТЬ ОСОБУ", self)
         title.setStyleSheet("font-size: 36px; font-weight: bold; color: #000000; padding: 20px;")
         central_layout.addWidget(title)
 
@@ -75,7 +78,7 @@ class SelectUser(QWidget):
         button_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
         # Кнопка "Скасувати"
-        cancel_button = QPushButton("Скасувати", self)
+        cancel_button = QPushButton("Повернутися", self)
         cancel_button.setStyleSheet(""" 
             QPushButton {
                 background-color: #B1C3FC;
@@ -91,7 +94,7 @@ class SelectUser(QWidget):
             }
         """)
         cancel_button.setFixedSize(150, 50)
-        cancel_button.clicked.connect(sys.exit)
+        cancel_button.clicked.connect(self.go_to_first_page)
         button_layout.addWidget(cancel_button)
 
 
@@ -143,6 +146,13 @@ class SelectUser(QWidget):
         if isinstance(main_window, QMainWindow):
             entry_page = EntryPage()
             main_window.setCentralWidget(entry_page)
+            self.deleteLater()
+
+    def go_to_first_page(self):
+        main_window = self.window()
+        if isinstance(main_window, QMainWindow):
+            first_enter = FirstEnter()  # Ініціалізуємо сторінку реєстрації
+            main_window.setCentralWidget(first_enter)  # Замінюємо центральний віджет
             self.deleteLater()
 
 

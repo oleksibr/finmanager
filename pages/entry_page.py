@@ -1,13 +1,21 @@
 from PyQt6 import QtCore
-from PyQt6.QtWidgets import QWidget, QComboBox, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QApplication, QMainWindow
+from PyQt6.QtWidgets import QWidget, QComboBox, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QApplication, \
+    QMainWindow, QDialog
 from PyQt6.QtCore import Qt
 
+from finmanager.models.utils_db import get_list_db
 from select_user import SelectUser
 from change_existing_db import ChangeDB, load_csv
 from delete_existing_db import DeleteDB
 from create_new_db import CreateDB
 from PyQt6.QtGui import QPixmap, QIcon, QTransform
 from Utils import add_images_to_layout
+import finmanager.models.utils_db as util
+import finmanager.models.models as model
+import finmanager.config.config_db as conf
+
+
+
 
 class EntryPage(QWidget):
     def __init__(self):
@@ -66,8 +74,9 @@ class EntryPage(QWidget):
 
         # ComboBox for selecting the database
         self.db_combo = QComboBox(self)
-        path_csv = "csv/default_doc_types.csv"
-        self.db_combo.addItems(load_csv(path_csv))
+        self.db_combo.addItems(get_list_db())
+        conf1 = conf.DatabasesConfig()
+        self.db_combo.setCurrentIndex(conf1.get_idx_db_0())
         self.db_combo.setStyleSheet(""" 
             QComboBox {
                 background-color: #E8F0FF;
@@ -94,6 +103,7 @@ class EntryPage(QWidget):
                 height: 15px; 
             }
         """)
+        self.db_combo.currentIndexChanged.connect(self.handle_db_selection)
         self.db_combo.setFixedSize(450, 60)
 
         # Add database label and ComboBox to db_layout
@@ -194,13 +204,30 @@ class EntryPage(QWidget):
             main_window.setCentralWidget(main_page)
             self.deleteLater()
 
+    def handle_db_selection(self):
+        #selected_db = self.db_combo.itemText(index)
+        # selected_db = self.db_combo.setCurrentIndex(index)
+        index = self.db_combo.currentIndex()
+        conf1 = conf.DatabasesConfig()
+        conf1.set_current_db_idx(index)
 
     def open_create_db_window(self):
         if self.create_db_window is None:
             self.create_db_window = CreateDB()
-            self.create_db_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-            self.create_db_window.destroyed.connect(self.clear_create_db_window)
-        self.create_db_window.show()
+
+        # Використовуємо exec() для блокування й отримання результату
+        if self.create_db_window.exec() == QDialog.DialogCode.Accepted:
+            result = self.create_db_window.result_value
+            print(f"Результат: {result}")
+            if result == 1:
+                list_db = get_list_db()
+                self.db_combo.clear()
+                self.db_combo.addItems(list_db)
+                self.db_combo.setCurrentIndex(len(list_db)-1)
+            elif result == 2:
+                print("Введення порожнє!")
+        else:
+            print("Створення бази даних скасовано.")
 
     def open_change_db_window(self):
         selected_db = self.db_combo.currentText()
