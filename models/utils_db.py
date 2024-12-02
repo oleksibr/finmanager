@@ -33,6 +33,7 @@ def list_parent(in_model, id):
     print(list)
     return list
 
+
 def get_id_by_name(session, model, name):
     """id запису по збігу поля name."""
     record = session.query(model.id).filter(model.name == name).first()
@@ -92,10 +93,6 @@ def get_list_db():
     """
     config = conf_db.DatabasesConfig()
     return [val["db_name"] for val in config.get_list_db()]
-
-    print(get_list_db())
-    print(len(get_list_db()))
-
 
 
 def check_file_name_match(file_name, folder_path):
@@ -371,8 +368,8 @@ def edite_access_level(new_name=None, new_level=None, id = None, user = None):
     #         raise ValueError(f"Error deleting AccessLevel: {e}")
 
 
-# create_default_db("ddd11_test")
-#create_default_db()
+# create_default_db("test")
+# create_default_db()
 
 # delete_all_row_reset_id("AssociatedAccount")
 # add_data_from_single_csv("..\default_csv\AssociatedAccount.csv")
