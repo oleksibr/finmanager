@@ -19,8 +19,8 @@ import finmanager.models.models as model
 #         layout.addWidget(message_label)
 #
 #         # Поле для введення назви БД
-#         self.db_name_input = QLineEdit(self)
-#         self.db_name_input.setStyleSheet("""
+#         self.input = QLineEdit(self)
+#         self.input.setStyleSheet("""
 #             QLineEdit {
 #                 background-color: #FFFFFF;
 #                 font-size: 16px;
@@ -31,9 +31,9 @@ import finmanager.models.models as model
 #                 font-weight: bold;
 #             }
 #         """)
-#         self.db_name_input.setPlaceholderText("Назва системи фінансових витрат")
-#         self.db_name_input.setFixedSize(400, 40)
-#         layout.addWidget(self.db_name_input, alignment=Qt.AlignmentFlag.AlignCenter)
+#         self.input.setPlaceholderText("Назва системи фінансових витрат")
+#         self.input.setFixedSize(400, 40)
+#         layout.addWidget(self.input, alignment=Qt.AlignmentFlag.AlignCenter)
 #
 #         #button_layout = QHBoxLayout()
 #         # Кнопка для створення нової БД
@@ -86,9 +86,9 @@ import finmanager.models.models as model
 #         self.setLayout(layout)
 #
 #     def create_database(self):
-#         if not self.db_name_input.text():
+#         if not self.input.text():
 #             return 2
-#         util.create_default_db(self.db_name_input.text())
+#         util.create_default_db(self.input.text())
 #         return 1
 #
 #     def cancel_new_database(self):

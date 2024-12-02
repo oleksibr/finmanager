@@ -430,7 +430,7 @@ class MainPage(QWidget):
         # Додаємо горизонтальний лейаут з іконкою та написом до вертикального
         table_layout.addLayout(label_layout)
 
-        self.table_widget = QTableWidget(160, 8, self)
+        self.table_widget = QTableWidget(16, 8, self)
         self.table_widget.cellDoubleClicked.connect(self.open_document_by_click)
         self.table_widget.setHorizontalHeaderLabels([
             "Номер", "Назва", "Дебіт", "Кредит", "Дата", "Сума",
