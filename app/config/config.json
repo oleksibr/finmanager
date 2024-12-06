@@ -1,0 +1,76 @@
+{
+    "current_db": 9,
+    "dir_db": "..\\\\DB",
+    "default_csv_dir": "default_csv",
+    "list_db": [
+        {
+            "db_name": "default_db.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db2.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db3.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db4.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db5.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db6.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "babki.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db7.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db8.db",
+            "db_dir": "..\\\\DB"
+        }
+    ],
+    "default_csv": [
+        {
+            "default_synthetic_accounts_csv": "default_synthetic_accounts.csv"
+        },
+        {
+            "default_associated_account_csv": "associated_account.csv"
+        },
+        {
+            "default_user_level_csv": "default_user_level.csv"
+        },
+        {
+            "default_statuses_csv": "default_statuses.csv"
+        },
+        {
+            "default_accounts_types_csv": "default_accounts_types.csv"
+        },
+        {
+            "default_currencies_csv": "default_currencies.csv"
+        },
+        {
+            "default_doc_types_csv": "default_doc_types.csv"
+        },
+        {
+            "default_transaction_types_csv": "transaction_types.csv"
+        },
+        {
+            "default_users_csv": "default_users.csv"
+        }
+    ]
+}
