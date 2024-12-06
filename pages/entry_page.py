@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QWidget, QComboBox, QLabel, QVBoxLayout, QPushButton
 from PyQt6.QtCore import Qt
 
 from finmanager.models.utils_db import get_list_db
+# from finmanager.pages.registration import Registration
 from select_user import SelectUser
 from change_existing_db import ChangeDB, load_csv
 from delete_existing_db import DeleteDB
@@ -23,6 +24,8 @@ class EntryPage(QWidget):
 
         # Set window background color
         self.setStyleSheet("background-color: #F7F2F2;")
+
+
 
         # Initialize additional windows
         self.create_db_window = None
@@ -58,7 +61,7 @@ class EntryPage(QWidget):
         central_layout.setSpacing(10)
 
         # Create the database selection label
-        db_label = QLabel("Назва Системи Фінансових Витрат", self)
+        db_label = QLabel("Доступні системи фінансових витрат:", self)
         db_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         db_label.setStyleSheet("""
             QLabel {
@@ -70,7 +73,7 @@ class EntryPage(QWidget):
                 border: 3px solid #000000;
             }
         """)
-        db_label.setFixedSize(450, 60)
+        db_label.setFixedSize(455, 60)
 
         # ComboBox for selecting the database
         self.db_combo = QComboBox(self)
@@ -104,7 +107,7 @@ class EntryPage(QWidget):
             }
         """)
         self.db_combo.currentIndexChanged.connect(self.handle_db_selection)
-        self.db_combo.setFixedSize(450, 60)
+        self.db_combo.setFixedSize(455, 60)
 
         # Add database label and ComboBox to db_layout
         db_layout = QVBoxLayout()
@@ -166,7 +169,7 @@ class EntryPage(QWidget):
         central_layout.addLayout(buttons_layout)
 
         # Login button
-        login_button = QPushButton("Увійти", self)
+        login_button = QPushButton("Вхід на головну", self)
         login_button.setStyleSheet(""" 
             QPushButton {
                 background-color: #487EF1;
@@ -181,8 +184,9 @@ class EntryPage(QWidget):
                 border: 3px solid #000000;
             }
         """)
-        login_button.setFixedSize(250, 50)
-        central_layout.addWidget(login_button, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        login_button.setFixedSize(260, 50)
+        central_layout.addWidget(login_button, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
         login_button.clicked.connect(self.handle_login)
 
         # Add left column, central layout, and right column to main layout

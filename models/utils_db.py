@@ -9,7 +9,11 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import declarative_base
 import finmanager.config.config_db as conf_db
 import finmanager.models.models as model
+from finmanager.models.evgeniy_utils_part1 import create_user, get_user_by_id, get_all_users, delete_user, get_accounts_by_parent_id, get_document_types, create_empty_document, get_document_status, set_document_status
+# from evgeniy_utils_part1 import *
 
+# dd = get_user_by_id(1)
+# print(dd.name)
 
 # root_dt_values = model.AssociatedAccount.find_all_record_kt(session, 30)
 # root_kt_values = model.AssociatedAccount.find_all_record_dt(session, 30)
@@ -447,3 +451,30 @@ def edite_access_level(new_name=None, new_level=None, id = None, user = None):
 #
 # print("Всі файли успішно конвертовані!")
 
+def list_name_in_table(in_model):
+    """
+    list all name
+    :param in_model:
+    :return:
+    """
+    config = conf_db.DatabasesConfig()
+    session = config.create_session()
+    descendants = session.query(in_model).filter(in_model.name != "").all()
+    session.close()
+    list = [name.name for name in descendants]
+    return list
+
+def get_document_types():
+    config = conf_db.DatabasesConfig()
+    session = config.create_session()
+
+    try:
+        # Выполняем запрос для получения всех типов документов
+        document_types = session.query(model.DocumentType.id, model.DocumentType.name).all()
+
+        # Разделяем результат на два списка: ids и names
+        ids, names = zip(*document_types) if document_types else ([], [])
+
+        return list(ids), list(names)
+    finally:
+        session.close()

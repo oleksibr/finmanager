@@ -9,3 +9,4 @@ id;type;name;user_type
 8;pay;Сплатити за документом;''
 9;kredit;Кредит з нарахуваннями;''
 10;paycheck;Чек;''
+11;pokypka;Покупка;''

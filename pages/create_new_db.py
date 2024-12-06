@@ -98,10 +98,11 @@ class CreateDB(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.result_value = None  # Для збереження значення, яке потрібно повернути
-
+        self.setStyleSheet("background-color: #F7F2F2;")
         # Основний лейаут
         layout = QVBoxLayout()
-        layout.setContentsMargins(50, 50, 50, 50)
+        layout.setContentsMargins(20, 20, 20, 20)
+        self.setFixedSize(600, 300)
 
         # Лейбл для інструкції
         message_label = QLabel("Введіть назву нової \nсистеми фінансових витрат:", self)

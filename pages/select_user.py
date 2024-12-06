@@ -31,13 +31,13 @@ class SelectUser(QWidget):
         central_layout.setSpacing(10)
 
         # Заголовок
-        title = QLabel("ПІДТВЕРДІТЬ ОСОБУ", self)
+        title = QLabel("ПІДТВЕРДТЬТЕ КОРИСТУВАЧА", self)
         title.setStyleSheet("font-size: 36px; font-weight: bold; color: #000000; padding: 20px;")
-        central_layout.addWidget(title)
+        central_layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # Поле для введення логіну
-        login_label = QLabel("Введіть логін:", self)
-        login_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px;")
+        login_label = QLabel("          Введіть логін:", self)
+        login_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px;font-weight: bold;")
         central_layout.addWidget(login_label)
 
         login_input = QLineEdit(self)
@@ -51,11 +51,11 @@ class SelectUser(QWidget):
             border-radius: 20px;
             color: #000000;
         """)
-        central_layout.addWidget(login_input)
+        central_layout.addWidget(login_input, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # Поле для введення паролю
-        password_label = QLabel("Введіть пароль:", self)
-        password_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px;")
+        password_label = QLabel("           Введіть пароль:", self)
+        password_label.setStyleSheet("font-size: 20px; color: #000000; margin-top: 10px; font-weight: bold;")
         central_layout.addWidget(password_label)
 
         password_input = QLineEdit(self)
@@ -70,52 +70,20 @@ class SelectUser(QWidget):
             border-radius: 20px;
             color: #000000;
         """)
-        central_layout.addWidget(password_input)
+        central_layout.addWidget(password_input, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # Кнопки в одному горизонтальному розташуванні
         button_layout = QHBoxLayout()
-        button_layout.setSpacing(20)  # Відстань між кнопками
-        button_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
+        button_layout.setSpacing(5)  # Відстань між кнопками
+        button_layout.addSpacerItem(QSpacerItem(15, 15, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-        # Кнопка "Скасувати"
-        cancel_button = QPushButton("Повернутися", self)
-        cancel_button.setStyleSheet(""" 
-            QPushButton {
-                background-color: #B1C3FC;
-                color: #000000;
-                font-size: 18px;
-                border-radius: 20px;
-                padding: 10px 20px;
-                border: 3px solid #000000;
-            }
-            QPushButton:hover {
-                background-color: #406CF6;
-                border: 3px solid #FFFFFF;
-            }
-        """)
-        cancel_button.setFixedSize(150, 50)
-        cancel_button.clicked.connect(self.go_to_first_page)
+
+        cancel_button = create_custom_button("Повернутися", self, self.go_to_first_page)
+        cancel_button.setFixedSize(200, 50)
         button_layout.addWidget(cancel_button)
 
-
-        # Кнопка "Ок"
-        ok_button = QPushButton("OK", self)
-        ok_button.setStyleSheet(""" 
-            QPushButton {
-                background-color: #B1C3FC;
-                color: #000000;
-                font-size: 18px;
-                border-radius: 20px;
-                padding: 10px 20px;
-                border: 3px solid #000000;
-            }
-            QPushButton:hover {
-                background-color: #406CF6;
-                border: 3px solid #FFFFFF;
-            }
-        """)
-        ok_button.setFixedSize(150, 50)
-        ok_button.clicked.connect(self.go_to_entry_page)
+        ok_button = create_custom_button("OK", self, self.go_to_entry_page)
+        ok_button.setFixedSize(200, 50)
         button_layout.addWidget(ok_button)
 
         central_layout.addLayout(button_layout)

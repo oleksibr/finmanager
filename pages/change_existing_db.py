@@ -1,6 +1,6 @@
 import csv
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QLabel, QDialog
 from PyQt6.QtCore import Qt
 import os
 
@@ -18,16 +18,16 @@ def load_csv(file_csv):
     return [name[1] for name in data]
 
 
-class ChangeDB(QWidget):
+class ChangeDB(QDialog):
     def __init__(self, selected_db=""):
         super().__init__()
         self.setWindowTitle("Зміна системи")
-        self.setFixedSize(800, 600)
+        self.setFixedSize(600, 300)
         self.setStyleSheet("background-color: #F7F2F2;")
 
         # Основний вертикальний лейаут
         main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(150, 100, 150, 150)
+        main_layout.setContentsMargins(20, 20, 20, 20)
         main_layout.setSpacing(5)  # Загальний простір між елементами, зменшений
 
         # Підпис і назва обраної БД
@@ -94,7 +94,7 @@ class ChangeDB(QWidget):
                       border: 3px solid #FFFFFF;
                   }
               """)
-        cancel_button.setFixedSize(165, 50)
+        cancel_button.setFixedSize(170, 50)
         cancel_button.clicked.connect(self.close)  # Закриває поточне вікно
         buttons_layout.addWidget(cancel_button, alignment=Qt.AlignmentFlag.AlignRight)
 
@@ -115,7 +115,7 @@ class ChangeDB(QWidget):
                 border: 3px solid #FFFFFF;
             }
         """)
-        changedb_button.setFixedSize(165, 50)
+        changedb_button.setFixedSize(170, 50)
         buttons_layout.addWidget(changedb_button, alignment=Qt.AlignmentFlag.AlignLeft)
 
         # Додаємо лейаут кнопок до основного лейауту

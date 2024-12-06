@@ -1,5 +1,5 @@
 {
-    "current_db": 4,
+    "current_db": 17,
     "dir_db": "..\\\\DB",
     "default_csv_dir": "default_csv",
     "list_db": [
@@ -33,6 +33,46 @@
         },
         {
             "db_name": "wwwww.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db3.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db4.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db5.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db6.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db7.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "test1.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db8.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db9.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "default_db10.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "baza.db",
             "db_dir": "..\\\\DB"
         }
     ],

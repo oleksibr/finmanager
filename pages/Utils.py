@@ -30,7 +30,7 @@ def add_images_to_layout(layout, mirrored):
 
         # Налаштування розміру зображення
         image_label.setPixmap(pixmap.scaled(
-            48, 48,
+            45, 45,
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation
         ))

@@ -1,12 +1,15 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QLabel, QPushButton, QLineEdit, QHBoxLayout, QMainWindow
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QLabel, QPushButton, QLineEdit, QHBoxLayout, \
+    QMainWindow, QFrame, QDialog
 from PyQt6.QtCore import Qt, QPropertyAnimation, QRect
 from PyQt6.QtGui import QPixmap, QTransform
 
+from finmanager.pages.entry_page import EntryPage
+from finmanager.pages.main_page import MainPage
 from first_enter import FirstEnter, add_images_to_layout, create_custom_button
+import finmanager.models.utils_db as util
 
-
-class Registration(QWidget):
+class Registration(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Реєстрація")
@@ -27,36 +30,61 @@ class Registration(QWidget):
 
         # Центральна частина
         central_layout = QVBoxLayout()
-        central_layout.setSpacing(5)  # Зменшення відстані між елементами
+        central_layout.setSpacing(10)  # Зменшення відстані між елементами
+
+        # header = QFrame()
+        # header.setStyleSheet("background-color: #F7F2F2;")
+        # header.setFixedHeight(60)
+        # header_layout = QHBoxLayout(header)
+        #
+        # # Іконка
+        # self.hand_icon = QLabel()
+        # pixmap = QPixmap("images/financial.png").scaled(
+        #     37, 37,
+        #     Qt.AspectRatioMode.KeepAspectRatio,
+        #     Qt.TransformationMode.SmoothTransformation
+        # )
+        # self.hand_icon.setPixmap(pixmap)
+        #
+        # # Текст у заголовку
+        # self.header_label = QLabel("Financial cost\nmanagement system     ")
+        # self.header_label.setStyleSheet("font-size: 16px; color: #000000; font-weight: bold;")
+
+        # header_layout.addWidget(self.hand_icon, alignment=Qt.AlignmentFlag.AlignRight)
+        # header_layout.addWidget(self.header_label, alignment=Qt.AlignmentFlag.AlignLeft)
+        #
+        # central_layout.addWidget(header)
 
         # Заголовок
         title = QLabel("РЕЄСТРАЦІЯ", self)
         title.setStyleSheet("font-size: 36px; font-weight: bold; color: #000000; margin-top: 50px;")
         central_layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignHCenter)
+        title.setContentsMargins(0, 0, 0, 0)
 
         input_field = QVBoxLayout()
-        input_field.setSpacing(5)  # Зменшення відстані між полями вводу
+        input_field.setSpacing(20)  # Зменшення відстані між полями вводу
         input_field.setContentsMargins(0, 0, 0, 0)  # Відсутність зайвих відступів
         # Поля вводу
         self.add_input_field(input_field, "Введіть логін:", "Логін")
         self.add_input_field(input_field, "Введіть пароль:", "Пароль", echo_mode=True)
-        self.add_input_field(input_field, "Підтвердьте пароль:", "Пароль", echo_mode=True)
+        self.add_input_field(input_field, "Підтвердьте пароль:", "Повторення паролю", echo_mode=True)
 
         input_field.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         central_layout.addLayout(input_field)
 
         # Кнопки
-        button_layout = QVBoxLayout()
-        button_layout.setSpacing(5)  # Space between buttons
-        button_layout.setContentsMargins(0, 0, 0, 0)  # Відсутність додаткових відступів
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(15)  # Space between buttons
+        button_layout.setContentsMargins(0, 50, 0, 0)  # Відсутність додаткових відступів
         button_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
-
-        button1 = create_custom_button("Зареєструватися", self, self.register_user)
         button2 = create_custom_button("Повернутися", self, self.go_to_first_page)
-        button1.setFixedSize(250, 50)
-        button2.setFixedSize(250, 50)
-        button_layout.addWidget(button1, alignment=Qt.AlignmentFlag.AlignRight)
+        button1 = create_custom_button("Зареєструватися", self, self.register_user)
+
+        button1.setFixedSize(220, 50)
+        button2.setFixedSize(220, 50)
         button_layout.addWidget(button2, alignment=Qt.AlignmentFlag.AlignLeft)
+        button_layout.addWidget(button1, alignment=Qt.AlignmentFlag.AlignRight)
+
 
         central_layout.addLayout(button_layout)
 
@@ -74,18 +102,18 @@ class Registration(QWidget):
         field_layout.setContentsMargins(0, 0, 0, 0)  # Вимкнення внутрішніх відступів
 
         label = QLabel(label_text)
-        label.setStyleSheet("font-size: 20px; color: #000000; font-weight: bold; margin: 0;")
+        label.setStyleSheet("font-size: 20px; color: #000000; font-weight: bold; margin: 5px; ")
         field_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignLeft)
 
         input_field = QLineEdit(self)
         input_field.setPlaceholderText(placeholder_text)
         input_field.setEchoMode(QLineEdit.EchoMode.Password if echo_mode else QLineEdit.EchoMode.Normal)
         input_field.setStyleSheet("""
-               font-size: 18px;
+               font-size: 20px;
                padding: 5px;
                background-color: #FFFFFF;
                border: 2px solid #d3d3d3;
-               border-radius: 10px;
+               border-radius: 20px;
                color: #000000;
                margin: 0;
            """)
@@ -101,15 +129,28 @@ class Registration(QWidget):
         elif placeholder_text == "Повторення паролю":
             self.password_confirm_input = input_field
 
+
     def register_user(self):
         """Перевірка введених даних при реєстрації."""
-        login = self.login_input.text()
+        name = self.login_input.text()
         password = self.password_input.text()
         confirm_password = self.password_confirm_input.text()
+
         if password == confirm_password:
-            print(f"Користувача {login} успішно зареєстровано!")
+            print(f"Користувача {name} успішно зареєстровано!")
+            util.create_user(name, password)
+
+            main_window = self.window()
+            if isinstance(main_window, QMainWindow):
+                from entry_page import EntryPage
+                main_page = EntryPage()  # Створюємо новий віджет
+
+                main_window.setCentralWidget(main_page)
+                self.deleteLater()
+
         else:
             print("Паролі не співпадають!")
+
 
     def go_to_first_page(self):
         main_window = self.window()
