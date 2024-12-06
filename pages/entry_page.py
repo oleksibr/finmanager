@@ -185,7 +185,7 @@ class EntryPage(QWidget):
             }
         """)
 
-        login_button.setFixedSize(260, 50)
+        login_button.setFixedSize(260, 60)
         central_layout.addWidget(login_button, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
         login_button.clicked.connect(self.handle_login)
 
@@ -200,11 +200,9 @@ class EntryPage(QWidget):
         main_window = self.window()
         if isinstance(main_window, QMainWindow):
             print("Перехід до головного вікна")
-            # select_user = SelectUser()  # Створюємо новий віджет
             from main_page import MainPage
-            main_page = MainPage()  # Створюємо новий віджет
-            # main_window.update_central_widget(select_user)
-            # main_window.update_central_widget(main_page)
+            main_page = MainPage()
+
             main_window.setCentralWidget(main_page)
             self.deleteLater()
 

@@ -86,7 +86,7 @@ class FirstEnter(QWidget):
         # Add buttons to the horizontal layout
         button1 = create_custom_button("Зареєструватися", self, self.handle_registr)
         button2 = create_custom_button("Увійти", self, self.go_to_login_page)
-        button3 = create_custom_button("test", self, self.go_to_entry_page)
+
 
         button_layout.addWidget(button1, alignment=Qt.AlignmentFlag.AlignLeft)
         button_layout.addWidget(button2, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -133,14 +133,14 @@ class FirstEnter(QWidget):
             main_window.setCentralWidget(select_user)
             self.deleteLater()
 
-    def go_to_entry_page(self):
-        from main_page import DocumentCreationWindow
-        main_window = self.window()
-
-        if isinstance(main_window, QMainWindow):
-            main_page = DocumentCreationWindow()
-            main_window.setCentralWidget(main_page)
-            self.deleteLater()
+    # def go_to_entry_page(self):
+    #     from main_page import DocumentCreationWindow
+    #     main_window = self.window()
+    #
+    #     if isinstance(main_window, QMainWindow):
+    #         main_page = DocumentCreationWindow()
+    #         main_window.setCentralWidget(main_page)
+    #         self.deleteLater()
 
 
 def add_images_to_layout(layout, mirrored):

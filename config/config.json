@@ -1,5 +1,5 @@
 {
-    "current_db": 17,
+    "current_db": 19,
     "dir_db": "..\\\\DB",
     "default_csv_dir": "default_csv",
     "list_db": [
@@ -73,6 +73,14 @@
         },
         {
             "db_name": "baza.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "hhh.db",
+            "db_dir": "..\\\\DB"
+        },
+        {
+            "db_name": "mydata.db",
             "db_dir": "..\\\\DB"
         }
     ],

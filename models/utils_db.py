@@ -478,3 +478,28 @@ def get_document_types():
         return list(ids), list(names)
     finally:
         session.close()
+
+def get_list_accouts():
+    config = conf_db.DatabasesConfig()
+    session = config.create_session()
+
+    query_result = session.query(model.Account).all()
+
+    # Access columns using the model's table attribute
+    data = [[getattr(row, column.name) for column in model.Account.__table__.columns] for row in query_result]
+
+    # Insert an empty column (value 0) after the first column
+    data_with_empty_column = [row[:1] + [0] + row[1:] for row in data]
+
+    session.close()
+
+    for i, val in enumerate(data_with_empty_column):
+        for n, v in enumerate(val):
+            if n == 2 and v == 1:
+                data_with_empty_column[i][n] = 0
+
+    return data_with_empty_column
+
+
+for val in get_list_accouts():
+    print(val)

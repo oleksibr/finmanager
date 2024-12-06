@@ -884,19 +884,19 @@ class MainPage(QWidget):
         button_width = 180
         button_layout.setContentsMargins(0, 60, 0, 0)
         create_button = self.create_custom_button("Створити", button_width)
-        # add_button = self.create_custom_button("Редагувати", button_width)
-        # delete_button = self.create_custom_button("Видалити", button_width)
-        # rename_button = self.create_custom_button("Перейменувати", button_width)
+        add_button = self.create_custom_button("Редагувати", button_width)
+        delete_button = self.create_custom_button("Видалити", button_width)
+        rename_button = self.create_custom_button("Перейменувати", button_width)
 
         create_button.clicked.connect(self.open_document_creation_window)
-        # add_button.clicked.connect(self.add_document)
-        # delete_button.clicked.connect(self.delete_document)
-        # rename_button.clicked.connect(self.rename_document)
+        add_button.clicked.connect(self.add_document)
+        delete_button.clicked.connect(self.delete_document)
+        rename_button.clicked.connect(self.rename_document)
 
         button_layout.addWidget(create_button)
-        # button_layout.addWidget(add_button)
-        # button_layout.addWidget(delete_button)
-        # button_layout.addWidget(rename_button)
+        button_layout.addWidget(add_button)
+        button_layout.addWidget(delete_button)
+        button_layout.addWidget(rename_button)
 
         # Додаємо лейаут для таблиці та кнопок до головного лейаута
         main_layout.addLayout(table_layout)  # Додаємо таблицю з написом до головного лейаута
@@ -954,54 +954,20 @@ class MainPage(QWidget):
         label.setStyleSheet("color: #000000; font-size: 26px; margin-bottom: 20px;")  # Додано нижній відступ
         layout.addWidget(label)
 
-
-        self.table_widget = QTableWidget(10, 8, self)
-        self.table_widget.cellDoubleClicked.connect(self.open_document_by_click)
-        self.table_widget.setHorizontalHeaderLabels([
-            "Номер", "Дата", "Дебіт", "Кредит", "Сума", "Статус", "Тип документу",
-            "Коментар"
-        ])
-
-        self.table_widget.horizontalHeader().setStyleSheet("""
-                    QHeaderView::section {
-                        background-color: #E8F0FF;
-                        font-size: 14px;
-                        font-weight: bold;
-                        color: #000000;
-                        padding: 5px;
-                        border-radius: 15px;
-                        border: 2px solid #000000;
-                    }
-                """)
-
-        # Приховуємо вертикальні заголовки
-        self.table_widget.verticalHeader().setVisible(False)
-
-        # Стиль для таблиці (округлення кутів)
-        self.table_widget.setStyleSheet("""
-                    QTableWidget {
-                        font-size: 16px;
-                        color: #000000;
-                        background-color: #FFFFFF;
-                        border: 3px solid #000000;
-                    }
-                    QTableWidget::item {
-                        padding: 5px;
-                    }
-                """)
-        self.table_widget.setFixedSize(980, 550)
-
         # Створення кнопок
-        # button_width = 180
-        # create_button = self.create_custom_button("Створити", button_width)
-        # add_button = self.create_custom_button("Додати", button_width)
-        # delete_button = self.create_custom_button("Видалити", button_width)
-        # rename_button = self.create_custom_button("Перейменувати", button_width)
-        #
-        # layout.addWidget(create_button)
-        # layout.addWidget(add_button)
-        # layout.addWidget(delete_button)
-        # layout.addWidget(rename_button)
+        button_width = 180
+        create_button = self.create_custom_button("Створити", button_width)
+        add_button = self.create_custom_button("Додати", button_width)
+        delete_button = self.create_custom_button("Видалити", button_width)
+        rename_button = self.create_custom_button("Перейменувати", button_width)
+
+        # Підключення кнопок до функцій
+
+        # Додавання кнопок до лейауту
+        layout.addWidget(create_button)
+        layout.addWidget(add_button)
+        layout.addWidget(delete_button)
+        layout.addWidget(rename_button)
 
         # Налаштовуємо віджет
         widget.setLayout(layout)
@@ -1017,7 +983,7 @@ class MainPage(QWidget):
         # Лейбл для таблиці
         label = QLabel("Звіти:", self)
         label.setStyleSheet("font-size: 26px; color: #000000; margin-bottom: 1px;")  # Додано верхній відступ
-        table_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)  # Центрування напису
+        table_layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)  # Центрування напису
 
         # Створення таблиці
         self.table_widget = QTableWidget(10, 4, self)
@@ -1025,6 +991,7 @@ class MainPage(QWidget):
             "Назва", "Дата",
             "Статус", "Коментар"
         ])
+
 
         self.table_widget.horizontalHeader().setStyleSheet("""
                     QHeaderView::section {
@@ -1053,7 +1020,7 @@ class MainPage(QWidget):
                         padding: 5px;
                     }
                 """)
-        self.table_widget.setFixedSize(980, 550)
+        self.table_widget.setFixedSize(500, 300)
 
         # Задання висоти рядків і ширини колонок
         row_height = 40  # Висота рядка
@@ -1073,20 +1040,20 @@ class MainPage(QWidget):
         table_layout.addWidget(self.table_widget)  # Додаємо таблицю під напис
 
         # Лейаут для кнопок
-        # button_layout = QVBoxLayout()
-        # button_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        button_layout = QVBoxLayout()
+        button_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        # button_width = 180
-        # button_layout.setContentsMargins(0, 60, 0, 0)
-        # create_button1 = self.create_custom_button("Створити", button_width)
-        # add_button1 = self.create_custom_button("Додати", button_width)
-        # delete_button1 = self.create_custom_button("Видалити", button_width)
-        # rename_button1 = self.create_custom_button("Перейменувати", button_width)
+        button_width = 180
+        button_layout.setContentsMargins(0, 60, 0, 0)
+        create_button1 = self.create_custom_button("Створити", button_width)
+        add_button1 = self.create_custom_button("Додати", button_width)
+        delete_button1 = self.create_custom_button("Видалити", button_width)
+        rename_button1 = self.create_custom_button("Перейменувати", button_width)
 
-        # button_layout.addWidget(create_button1)
-        # button_layout.addWidget(add_button1)
-        # button_layout.addWidget(delete_button1)
-        # button_layout.addWidget(rename_button1)
+        button_layout.addWidget(create_button1)
+        button_layout.addWidget(add_button1)
+        button_layout.addWidget(delete_button1)
+        button_layout.addWidget(rename_button1)
 
         # Додаємо лейаут для таблиці та кнопок до головного лейаута
         main_layout.addLayout(table_layout)  # Додаємо таблицю з написом до головного лейаута
@@ -1102,9 +1069,40 @@ class MainPage(QWidget):
         layout = QVBoxLayout(widget)
 
         # Лейбл для опису
-        label = QLabel("Витрати за місяць")
+        label = QLabel("Витрати за місяць:")
         label.setStyleSheet("font-size: 26px; color: #000000; margin-bottom: 1px;")  # Додано верхній відступ
         layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)  # Центруван
+
+        # Створення графічного виду для графіка
+        scene = QGraphicsScene(self)
+        view = QGraphicsView(scene)
+        view.setFixedSize(1000, 600)
+
+        # Дані для графіка
+        categories = ["Оренда житла", "Харчування", "Транспорт", "Комун. послуги", "Здоров'я", "Розваги",
+                      "Інші витрати"]
+        expenses = [120, 450, 300, 150, 200, 100, 50]
+        max_expense = max(expenses)
+        width = 80  # Ширина стовпця
+        spacing = 100  # Відстань між стовпцями
+
+        for i, expense in enumerate(expenses):
+            height = (expense / max_expense) * 400  # Масштабування висоти
+            x_pos = i * spacing
+
+            # Створення стовпця
+            color = self.get_column_color(expense, max_expense)
+            rect = QGraphicsRectItem(x_pos, 500 - height, width, height)
+            rect.setBrush(color)
+            scene.addItem(rect)
+
+            # Додавання підпису категорії
+            text_item = scene.addText(categories[i])
+            text_item.setPos(x_pos, 510)
+            text_item.setDefaultTextColor(QColor(0, 0, 0))
+
+        layout.addWidget(view)
+        return widget
 
         # button_layout = QHBoxLayout()
     #
@@ -1187,13 +1185,15 @@ class MainPage(QWidget):
 
         label = QLabel("План рахунків:")
         label.setStyleSheet("font-size: 26px; color: #000000; margin-bottom: 1px;")  # Додано верхній відступ
-        layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)  # Центруван
+        layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignCenter)  # Центрування
+
         # Створюємо таблицю
         table = QTableWidget(1, 7)
         table.setHorizontalHeaderLabels([
-            "ID", "Рахунок", "Субрахунок", "Субконта",  "Статус", "Опис", "Тип операції"
+            "ID", "Рахунок", "Субрахунок", "Субконта", "Статус", "Опис", "Тип операції"
         ])
 
+        table.setFixedSize(950, 500)
         table.setColumnWidth(0, 120)  # ID
         table.setColumnWidth(1, 120)  # Рахунок
         table.setColumnWidth(2, 120)  # Субрахунок
@@ -1201,6 +1201,7 @@ class MainPage(QWidget):
         table.setColumnWidth(4, 120)  # Статус
         table.setColumnWidth(5, 120)  # Опис
         table.setColumnWidth(6, 120)  # Тип операції
+        layout.addWidget(table, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Додаємо стилі заголовків
         table.horizontalHeader().setStyleSheet("""
@@ -1230,7 +1231,17 @@ class MainPage(QWidget):
                                         padding: 5px;
                                     }
                                 """)
-        table.setFixedSize(980, 550)
+        table.setFixedSize(950, 400)
+
+
+        data = util.get_list_accouts()
+        for i, row in enumerate(data):
+            table.addItem(0, 0, )
+        table.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for column_index, cell_data in enumerate(row_data):
+                table.setItem(row_index, column_index, QTableWidgetItem(cell_data))
 
         # Додаємо таблицю в макет
         layout.addWidget(table)
@@ -1238,7 +1249,6 @@ class MainPage(QWidget):
         widget.setLayout(layout)
 
         return widget
-
 
     def create_magazines_widget(self):
         widget = QWidget()
@@ -1267,141 +1277,141 @@ class MainPage(QWidget):
             self.deleteLater()
 
 
-    # def add_document(self):
-    #     """Відкрити вікно вибору файлу і додати документ до списку."""
-    #     file_path, _ = QFileDialog.getOpenFileName(
-    #         self,
-    #         "Оберіть документ",
-    #         "",
-    #         "Документи (*.docx *.pdf *.txt *.xlsx);;Усі файли (*)"
-    #     )
-    #
-    #     if file_path:  # Якщо файл обрано
-    #         file_name = file_path.split("/")[-1]  # Отримати лише ім'я файлу
-    #         self.document_list.addItem(file_name)  # Додати файл до списку
-    #
-    #         # Інформаційне повідомлення
-    #         msg_box = QMessageBox(self)
-    #         msg_box.setIcon(QMessageBox.Icon.Information)
-    #         msg_box.setWindowTitle("Файл додано")
-    #         msg_box.setText(f"Документ '{file_name}' успішно додано.")
-    #         msg_box.setStyleSheet("""
-    #             QMessageBox {
-    #                 font-size: 14px;
-    #             }
-    #             QMessageBox QLabel {
-    #                 color: #000000;
-    #             }
-    #             QMessageBox QPushButton {
-    #                 background-color: #406CF6;
-    #                     color: #FFFFFF;
-    #                     font-size: 14px;
-    #                     border-radius: 10px;
-    #                     padding: 5px 10px;
-    #                     border: 2px solid #000000;
-    #             }
-    #             QMessageBox QPushButton:hover {
-    #                 background-color: #D0D0D0;
-    #             }
-    #         """)
-    #         msg_box.exec()
-    #     else:
-    #         msg_box = QMessageBox(self)
-    #         msg_box.setIcon(QMessageBox.Icon.Warning)
-    #         msg_box.setWindowTitle("Додавання скасовано")
-    #         msg_box.setText("Ви не обрали жодного документа.")
-    #         msg_box.setStyleSheet("""
-    #             QMessageBox {
-    #                 font-size: 14px;
-    #             }
-    #             QMessageBox QLabel {
-    #                 color: #000000;
-    #             }
-    #             QMessageBox QPushButton {
-    #                 background-color: #406CF6;
-    #                     color: #FFFFFF;
-    #                     font-size: 14px;
-    #                     border-radius: 10px;
-    #                     padding: 5px 10px;
-    #                     border: 2px solid #000000;
-    #             }
-    #             QMessageBox QPushButton:hover {
-    #                 background-color: #D0D0D0;
-    #             }
-    #         """)
-    #         msg_box.exec()
+    def add_document(self):
+        """Відкрити вікно вибору файлу і додати документ до списку."""
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Оберіть документ",
+            "",
+            "Документи (*.docx *.pdf *.txt *.xlsx);;Усі файли (*)"
+        )
 
-    # def delete_document(self):
-    #     """Видалити вибраний документ зі списку."""
-    #     selected_item = self.document_list.currentItem()
-    #
-    #     # Створюємо один об'єкт QMessageBox
-    #     msg_box = QMessageBox(self)
-    #     msg_box.setStyleSheet("""
-    #         QMessageBox {
-    #             color: #000000;  # Чорний текст
-    #             font-size: 16px;
-    #             border: 2px solid #A1A1A1;
-    #             border-radius: 10px;
-    #             padding: 20px;
-    #         }
-    #         QPushButton {
-    #             background-color: #406CF6;  # Синя кнопка
-    #             color: #FFFFFF;
-    #             font-size: 14px;
-    #             border-radius: 10px;
-    #             padding: 5px 10px;
-    #             border: 2px solid #000000;
-    #         }
-    #         QPushButton:hover {
-    #             background-color: #D0D0D0;  # При наведенні світлішає
-    #         }
-    #     """)
-    #
-    #     if selected_item:
-    #         # Створення питання для підтвердження видалення
-    #         reply = msg_box.question(
-    #             self,
-    #             "Підтвердження видалення",
-    #             f"Ви дійсно хочете видалити документ '{selected_item.text()}'?",
-    #             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-    #             QMessageBox.StandardButton.No
-    #         )
-    #
-    #         if reply == QMessageBox.StandardButton.Yes:
-    #             row = self.document_list.row(selected_item)
-    #             self.document_list.takeItem(row)
-    #
-    #             # Повідомлення про успішне видалення
-    #             msg_box.information(self, "Документ видалено", f"Документ '{selected_item.text()}' успішно видалено.")
-    #         elif reply == QMessageBox.StandardButton.No:
-    #             # Повідомлення про скасування видалення
-    #             msg_box.information(self, "Видалення скасовано", "Видалення документа скасовано.")
-    #     else:
-    #         # Якщо документ не вибрано, відобразити попередження
-    #         msg_box.setIcon(QMessageBox.Icon.Warning)
-    #         msg_box.setWindowTitle("Помилка")
-    #         msg_box.setText("Будь ласка, виберіть документ для видалення.")
-    #         msg_box.setStyleSheet("""
-    #             QMessageBox {
-    #                 font-size: 14px;
-    #             }
-    #             QMessageBox QLabel {
-    #                 color: #000000;
-    #             }
-    #             QMessageBox QPushButton {
-    #                 background-color: #406CF6;
-    #                 color: #FFFFFF;
-    #                 font-size: 14px;
-    #                 border-radius: 10px;
-    #                 padding: 5px 10px;
-    #                 border: 2px solid #000000;
-    #             }
-    #             QMessageBox QPushButton:hover {
-    #                 background-color: #D0D0D0;
-    #             }
-    #         """)
-    #         msg_box.exec()  # Запускаємо виконання модального вікна
+        if file_path:  # Якщо файл обрано
+            file_name = file_path.split("/")[-1]  # Отримати лише ім'я файлу
+            self.document_list.addItem(file_name)  # Додати файл до списку
+
+            # Інформаційне повідомлення
+            msg_box = QMessageBox(self)
+            msg_box.setIcon(QMessageBox.Icon.Information)
+            msg_box.setWindowTitle("Файл додано")
+            msg_box.setText(f"Документ '{file_name}' успішно додано.")
+            msg_box.setStyleSheet("""
+                QMessageBox {
+                    font-size: 14px;
+                }
+                QMessageBox QLabel {
+                    color: #000000;
+                }
+                QMessageBox QPushButton {
+                    background-color: #406CF6;
+                        color: #FFFFFF;
+                        font-size: 14px;
+                        border-radius: 10px;
+                        padding: 5px 10px;
+                        border: 2px solid #000000;
+                }
+                QMessageBox QPushButton:hover {
+                    background-color: #D0D0D0;
+                }
+            """)
+            msg_box.exec()
+        else:
+            msg_box = QMessageBox(self)
+            msg_box.setIcon(QMessageBox.Icon.Warning)
+            msg_box.setWindowTitle("Додавання скасовано")
+            msg_box.setText("Ви не обрали жодного документа.")
+            msg_box.setStyleSheet("""
+                QMessageBox {
+                    font-size: 14px;
+                }
+                QMessageBox QLabel {
+                    color: #000000;
+                }
+                QMessageBox QPushButton {
+                    background-color: #406CF6;
+                        color: #FFFFFF;
+                        font-size: 14px;
+                        border-radius: 10px;
+                        padding: 5px 10px;
+                        border: 2px solid #000000;
+                }
+                QMessageBox QPushButton:hover {
+                    background-color: #D0D0D0;
+                }
+            """)
+            msg_box.exec()
+
+    def delete_document(self):
+        """Видалити вибраний документ зі списку."""
+        selected_item = self.document_list.currentItem()
+
+        # Створюємо один об'єкт QMessageBox
+        msg_box = QMessageBox(self)
+        msg_box.setStyleSheet("""
+            QMessageBox {
+                color: #000000;  # Чорний текст
+                font-size: 16px;
+                border: 2px solid #A1A1A1;
+                border-radius: 10px;
+                padding: 20px;
+            }
+            QPushButton {
+                background-color: #406CF6;  # Синя кнопка
+                color: #FFFFFF;
+                font-size: 14px;
+                border-radius: 10px;
+                padding: 5px 10px;
+                border: 2px solid #000000;
+            }
+            QPushButton:hover {
+                background-color: #D0D0D0;  # При наведенні світлішає
+            }
+        """)
+
+        if selected_item:
+            # Створення питання для підтвердження видалення
+            reply = msg_box.question(
+                self,
+                "Підтвердження видалення",
+                f"Ви дійсно хочете видалити документ '{selected_item.text()}'?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No
+            )
+
+            if reply == QMessageBox.StandardButton.Yes:
+                row = self.document_list.row(selected_item)
+                self.document_list.takeItem(row)
+
+                # Повідомлення про успішне видалення
+                msg_box.information(self, "Документ видалено", f"Документ '{selected_item.text()}' успішно видалено.")
+            elif reply == QMessageBox.StandardButton.No:
+                # Повідомлення про скасування видалення
+                msg_box.information(self, "Видалення скасовано", "Видалення документа скасовано.")
+        else:
+            # Якщо документ не вибрано, відобразити попередження
+            msg_box.setIcon(QMessageBox.Icon.Warning)
+            msg_box.setWindowTitle("Помилка")
+            msg_box.setText("Будь ласка, виберіть документ для видалення.")
+            msg_box.setStyleSheet("""
+                QMessageBox {
+                    font-size: 14px;
+                }
+                QMessageBox QLabel {
+                    color: #000000;
+                }
+                QMessageBox QPushButton {
+                    background-color: #406CF6;
+                    color: #FFFFFF;
+                    font-size: 14px;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    border: 2px solid #000000;
+                }
+                QMessageBox QPushButton:hover {
+                    background-color: #D0D0D0;
+                }
+            """)
+            msg_box.exec()  # Запускаємо виконання модального вікна
 
     def show_documents_info(self):
         msg_box = QMessageBox(self)
